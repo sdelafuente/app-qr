@@ -1,5 +1,7 @@
 {
   "name": "appUno",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
