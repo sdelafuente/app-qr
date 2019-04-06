@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../../auth.service';
+
+import { AngularFireAuth } from '@angular/fire/auth';
+import { auth } from 'firebase/app';
 
 @Component({
   selector: 'app-register',
@@ -10,14 +12,34 @@ import { AuthService } from '../../auth.service';
 
 export class RegisterPage implements OnInit {
 
-  constructor(private  authService:  AuthService, private  router:  Router) { }
+  email: string;
+  password: string;
+  cpassword: string;
+
+  constructor(
+    private  router:  Router,
+    public afAuth: AngularFireAuth
+  ) { }
 
   ngOnInit() {
   }
 
-  register(form) {
-    this.authService.register(form.value).subscribe((res) => {
-      this.router.navigateByUrl('home');
-    });
+  async register() {
+    const {email, password, cpassword} = this;
+
+    if ( password !== cpassword) {
+      console.log('error');
+    }
+// cynteran@gmail.com
+    try {
+        const response = await this.afAuth.auth.createUserWithEmailAndPassword(this.email, this.password);
+        if (response.user) {
+          this.router.navigateByUrl('login');
+        }
+    } catch (err) {
+        if (err.code === 'auth/user-not-found' ) {
+            console.dir(err);
+        }
+    }
   }
 }

@@ -7,6 +7,9 @@ import { IonicModule } from '@ionic/angular';
 
 import { BienvenidoPage } from './bienvenido.page';
 
+import { AngularFirestore } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
+
 const routes: Routes = [
   {
     path: '',
@@ -23,4 +26,9 @@ const routes: Routes = [
   ],
   declarations: [BienvenidoPage]
 })
-export class BienvenidoPageModule {}
+export class BienvenidoPageModule {
+  items: Observable<any[]>;
+  constructor(db: AngularFirestore) {
+    this.items = db.collection('post').valueChanges();
+  }
+}

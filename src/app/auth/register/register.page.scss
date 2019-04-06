@@ -1,8 +1,27 @@
-ion-item{
-    --background: #3880ff;
-    --color: #fff;
+// ion-item{
+//     --background: #3880ff;
+//     --color: #fff;
+// }
+//
+// ion-button{
+//     --background: #062f77;
+// }
+.item {
+
+    border-radius: 4px;
+    border-width: 1.5px;
+    padding: 0 !important;
+    margin-bottom: 8px;
+    color:#484848;
+}
+.button{
+
+  margin-top: 20px;
 }
 
-ion-button{
-    --background: #062f77;
+.grid {
+    font-family: 'San Fransico';
+}
+.content{
+  --ion-default-font: 'San Fransico' !important;
 }
