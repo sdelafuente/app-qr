@@ -6,21 +6,31 @@
     margin-bottom: 8px;
     color:#484848;
 }
-.button{
 
-  margin-top: 20px;
+// .button{
+//   margin-top: 20px;
+// }
+
+ion-input {
+  &.custom-input {
+    font-size: 0.8em; //sets text font size
+    ::placeholder {
+      font-size: 0.8em; //sets placeholder font size
+    }
+  }
 }
 
-a{
-    color: #ccc;
-}
-.grid {
-    font-family: 'San Fransico';
-    // src: url('../fonts/Lato-Light.eot') format('embedded-opentype'), url('../fonts/Lato-Light.woff') format('woff'), url('../fonts/Lato-Light.ttf') format('truetype');
-    // --font-weight: normal;
-    // --font-style: normal;
-}
-.content{
-  --ion-default-font: 'San Fransico' !important;
-// font-family: 'San Fransico' !important;
+ion-spinner {
+  stroke: #ff0000;
+  fill: #8b0000;
+  position: fixed;
+  z-index: 999;
+  height: 5em;
+  width: em;
+  overflow: show;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
 }
