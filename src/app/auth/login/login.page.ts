@@ -15,20 +15,25 @@ export class LoginPage implements OnInit {
   email: string;
   password: string;
   loading: boolean;
-  ingresar: boolean;
+  splash: boolean;
+  // secondPage = SecondPagePage;
 
   constructor(
     private  router:  Router,
     public afAuth: AngularFireAuth
   ) {
     this.loading = false;
-    // this.ingresar = false;
-
+    this.splash = true;
   }
 
   ngOnInit() {
-    // this.loading = false;
-    // this.ingresar = false;
+    this.loading = false;
+    this.ionViewDidLoad();
+  }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad');
+    setTimeout(() => this.splash = false, 3000);
   }
 
   async login() {
@@ -39,25 +44,19 @@ export class LoginPage implements OnInit {
       // console.log(response);
       if (response.user) {
         this.loading = false;
-        this.ingresar = false;
+
         this.router.navigateByUrl('bienvenido');
       }
 
     } catch (err) {
         this.loading = false;
-        this.ingresar = false;
+
         // if (err.code === 'auth/user-not-found' ) {
         //     console.dir(err);
         // } else {
         //   console.dir(err);
         // }
     }
-  }
-  verificar () {
-    if (this.email != undefined && this.password != undefined)
-      this.ingresar = true;
-    else
-      this.ingresar = false;
   }
 
   cargarUsuario(user) {
