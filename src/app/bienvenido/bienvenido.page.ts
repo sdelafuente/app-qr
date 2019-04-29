@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import {  BarcodeScannerOptions,  BarcodeScanner } from "@ionic-native/barcode-scanner/ngx";
+import { CargadorService } from '../services/cargador.service';
+
 
 @Component({
   selector: 'app-bienvenido',
@@ -16,6 +18,7 @@ export class BienvenidoPage implements OnInit {
   // }
   //
 
+  cargadorService : CargadorService;
   encodeData: any;
   scannedData: {};
   barcodeScannerOptions: BarcodeScannerOptions;
@@ -36,8 +39,11 @@ export class BienvenidoPage implements OnInit {
     this.barcodeScanner
       .scan()
       .then(barcodeData => {
-        alert("Barcode data " + JSON.stringify(barcodeData));
+        // alert("Barcode data " + JSON.stringify(barcodeData));
+        
         this.scannedData = barcodeData;
+        this.cargadorService.getSaldoFromQR(JSON.stringify(barcodeData));
+        
       })
       .catch(err => {
         console.log("Error", err);
