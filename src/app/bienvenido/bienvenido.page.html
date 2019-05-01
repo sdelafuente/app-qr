@@ -1,31 +1,26 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      Ionic 4 QR/ Barcode Scanner
+      Carga de Credito
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content ion-padding>
-  <h1>Click Button To Scan</h1>
+  <!-- <div class=""> -->
+    <h2>Credito</h2>
 
-  <ion-button (click)="scanCode()">
-    Scan Code
-  </ion-button>
+    <div *ngIf="scannedData">
+      <p>Scanned Code Text : <b>{{ scannedData["text"] }}</b></p>
+      <p>Scanned Code Format : <b>{{ scannedData["format"] }}</b></p>
+      <p>SALDO : <b>{{ saldoVisible }}</b></p>
+    </div>
+  <!--
+    <h2>Enter Value to Create QR code</h2>
+    <ion-input type="text" [(ngModel)]="encodedData"></ion-input> -->
+    <!-- <ion-button (click)="encodedText()"> Create QR </ion-button> -->
 
-  <div *ngIf="scannedData">
-    <p>
-      Scanned Code Text : <b>{{ scannedData["text"] }}</b>
-    </p>
-    <p>
-      Scanned Code Format : <b>{{ scannedData["format"] }}</b>
-    </p>
-  </div>
+      <ion-button  expand="block" (click)="scanCode()">Escanear QR</ion-button>
 
-  <h1>Enter Value to Create QR code</h1>
-  <ion-input type="text" [(ngModel)]="encodedData"></ion-input>
-
-  <ion-button (click)="encodedText()">
-    Create QR
-  </ion-button>
+  <!-- </div> -->
 </ion-content>

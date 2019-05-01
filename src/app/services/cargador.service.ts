@@ -17,7 +17,7 @@ export class CargadorService {
   // private usuarios: Observable<UsuarioI[]>;
 
   constructor(db: AngularFirestore) {
-    this.qrCollection = db.collection<CodigoI>('codigos');
+    this.qrCollection = db.collection<any>('codigos');
     this.codigos = this.qrCollection.snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {
@@ -30,8 +30,12 @@ export class CargadorService {
   }
 
 
-  public getSaldoFromQR(hashFromQR : string){
-    return this.qrCollection.doc<CodigoI>(hashFromQR).valueChanges();
+  public getSaldoFromQR(hashFromQR: string){
+    return this.qrCollection.doc<any>(hashFromQR).valueChanges();
+  }
+
+  public getLista(hashFromQR: string){
+    return this.qrCollection.valueChanges();
   }
 
 }

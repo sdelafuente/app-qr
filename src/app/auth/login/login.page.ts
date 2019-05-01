@@ -14,26 +14,20 @@ export class LoginPage implements OnInit {
 
   email: string;
   password: string;
-  loading: boolean;
-  splash: boolean;
-  // secondPage = SecondPagePage;
+  loading = false;
+  splash = true;
 
   constructor(
     private  router:  Router,
     public afAuth: AngularFireAuth
   ) {
-    this.loading = false;
-    this.splash = true;
+    // this.loading = false;
+    // this.splash = true;
   }
 
   ngOnInit() {
     this.loading = false;
-    this.ionViewDidLoad();
-  }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad');
-    setTimeout(() => this.splash = false, 3000);
+    setTimeout(() => { this.splash = false; } , 4500);
   }
 
   async login() {

@@ -18,12 +18,13 @@ export class BienvenidoPage implements OnInit {
   // }
   //
 
-  cargadorService : CargadorService;
   encodeData: any;
   scannedData: {};
+  valorCodigo: any;
   barcodeScannerOptions: BarcodeScannerOptions;
-
-  constructor(private barcodeScanner: BarcodeScanner) {
+  arrCodigos: any = [];
+  saldoVisible: any;
+  constructor(private barcodeScanner: BarcodeScanner, public cs: CargadorService) {
     this.encodeData = "https://www.FreakyJolly.com";
     //Options
     this.barcodeScannerOptions = {
@@ -33,17 +34,26 @@ export class BienvenidoPage implements OnInit {
   }
 
   ngOnInit() {
+    this.cs.getLista(JSON.stringify(this.saldoVisible)).subscribe(data => {
+       data.forEach(obj => {
+         this.arrCodigos[obj.qr] = obj.saldo;
+       });
+       console.log(this.arrCodigos);
+     });
   }
 
   scanCode() {
     this.barcodeScanner
       .scan()
       .then(barcodeData => {
-        // alert("Barcode data " + JSON.stringify(barcodeData));
-        
-        this.scannedData = barcodeData;
-        this.cargadorService.getSaldoFromQR(JSON.stringify(barcodeData));
-        
+          this.scannedData = barcodeData;
+          if (barcodeData['text'] in this.arrCodigos) {
+            this.saldoVisible = this.arrCodigos[barcodeData['text']];
+          } else {
+              this.saldoVisible = 0;
+          }
+        // this.valorCodigo = this.cargadorService.getSaldoFromQR(JSON.stringify(barcodeData));
+
       })
       .catch(err => {
         console.log("Error", err);

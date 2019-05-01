@@ -1,13 +1,12 @@
-<ion-content color="dark" padding>
-
-
-  <div id="custom-overlay" [style.display]="splash ? 'flex': 'none'">
-    <div class="flb">
-      <div class="Aligner-item Aligner-item--top"></div>
-      <img class="animation-target" src="assets/icono.cuatro.svg">
-      <div class="Aligner-item Aligner-item--bottom"></div>
-    </div>
+<div id="custom-overlay" [style.display]="splash ? 'flex': 'none'">
+  <div class="flb">
+    <div class="Aligner-item Aligner-item--top"></div>
+    <img class="animation-target" src="assets/icono.cuatro.svg">
+    <div class="Aligner-item Aligner-item--bottom"></div>
   </div>
+</div>
+
+<ion-content color="dark" padding>
 
   <div class="" *ngIf="loading">
       <ion-spinner name="dots" color="light" ></ion-spinner>
