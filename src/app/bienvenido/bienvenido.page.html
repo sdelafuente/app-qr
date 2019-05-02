@@ -10,6 +10,9 @@
       <div class="" align="center">
           <h3>Saldo</h3>
       </div>
+      <div class="" *ngIf="saldoCargado" >
+        <p>ESE SALDO YA SE CARGÓ PREVIAMENTE!!</p>
+      </div>
       <div class="" *ngIf="scannedData" >
         <p>Scanned Code Text : <b>{{ scannedData["text"] }}</b></p>
       </div>
@@ -19,6 +22,7 @@
             ${{ saldoVisible }}
         </ion-card-content>
       </ion-card>
+      <!-- <ion-button  expand="block" (click)="scanCode()">Escanear QR</ion-button> -->
       <ion-button  expand="block" (click)="scanCode()">Escanear QR</ion-button>
 
 </ion-content>

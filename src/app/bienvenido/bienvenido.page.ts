@@ -24,34 +24,50 @@ export class BienvenidoPage implements OnInit {
   barcodeScannerOptions: BarcodeScannerOptions;
   arrCodigos: any = [];
   saldoVisible: any;
-  constructor(private barcodeScanner: BarcodeScanner, public cs: CargadorService) {
+  saldoCargado: any;
+  constructor(
+    private barcodeScanner: BarcodeScanner,
+    public cs: CargadorService
+  ) {
     // this.encodeData = "https://www.FreakyJolly.com";
-    //Options
+    // Options
     this.barcodeScannerOptions = {
       showTorchButton: true,
       showFlipCameraButton: true
     };
-    this.saldoVisible = 0;
+
   }
 
   ngOnInit() {
     this.cs.getQrs().subscribe(data => {
        data.forEach(obj => {
-         this.arrCodigos[obj.qr.substr(5,10)] = obj.saldo;
+         this.arrCodigos[obj.qr.substr(5, 10)] = obj.saldo;
 
        });
      });
-       console.log(this.arrCodigos);
+     setTimeout(() => { this.saldoVisible = this.cs.getSaldo(); } , 2000);
+     this.saldoVisible = 0;
+     this.saldoCargado = false;
   }
 
   scanCode() {
+    this.saldoCargado = false;
     this.barcodeScanner
       .scan()
       .then(barcodeData => {
           this.scannedData = barcodeData;
 
           if (this.arrCodigos[barcodeData['text'].substr(5,10)]) {
-              this.saldoVisible = this.arrCodigos[barcodeData['text'].substr(5,10)];
+              // this.saldoVisible = ;
+              let cargo = this.cs.agregarCarga(this.arrCodigos[barcodeData['text'].substr(5, 10)]);
+              if(cargo) {
+                this.saldoVisible = this.cs.getSaldo();
+              } else {
+                this.saldoCargado = true;
+              }
+
+
+
           } else {
               this.saldoVisible = 0;
           }

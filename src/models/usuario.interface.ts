@@ -1,4 +1,5 @@
 export interface UsuarioI {
-    email:string;
-    cargas: string[];
+    id: string;
+    email: string;
+    cargas: number[];
 }
