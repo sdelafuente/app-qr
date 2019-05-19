@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
-import {  BarcodeScannerOptions,  BarcodeScanner } from "@ionic-native/barcode-scanner/ngx";
-import { CargadorService } from '../services/cargador.service';
+import { Platform } from '@ionic/angular';
 
+import { Observable } from 'rxjs';
+import { BarcodeScannerOptions, BarcodeScanner } from "@ionic-native/barcode-scanner/ngx";
+import { CargadorService } from '../services/cargador.service';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-bienvenido',
@@ -12,12 +14,6 @@ import { CargadorService } from '../services/cargador.service';
 })
 export class BienvenidoPage implements OnInit {
 
-  // items: Observable<any[]>;
-  // constructor(db: AngularFirestore) {
-  //   this.items = db.collection('santiago').valueChanges();
-  // }
-  //
-
   encodeData: any;
   scannedData: {};
   valorCodigo: any;
@@ -25,57 +21,65 @@ export class BienvenidoPage implements OnInit {
   arrCodigos: any = [];
   saldoVisible: any;
   saldoCargado: any;
+  // salirDeEscanear: any;
+
   constructor(
+    private platform: Platform,
     private barcodeScanner: BarcodeScanner,
-    public cs: CargadorService
+    public cs: CargadorService,
+    public afAuth: AngularFireAuth
+
   ) {
-    // this.encodeData = "https://www.FreakyJolly.com";
     // Options
     this.barcodeScannerOptions = {
-      showTorchButton: true,
+      showTorchButton: false,
       showFlipCameraButton: true
     };
-
   }
 
   ngOnInit() {
     this.cs.getQrs().subscribe(data => {
-       data.forEach(obj => {
-         this.arrCodigos[obj.qr.substr(5, 10)] = obj.saldo;
+      data.forEach(obj => {
+        this.arrCodigos[obj.qr.substr(5, 10)] = obj.saldo;
+      });
+    });
+    setTimeout(() => { this.saldoVisible = this.cs.getSaldo(); }, 3000);
+    this.saldoVisible = 0;
+    this.saldoCargado = false;
+    // this.backButtonEvent();
+    // this.salirDeEscanear = false;
 
-       });
-     });
-     setTimeout(() => { this.saldoVisible = this.cs.getSaldo(); } , 2000);
-     this.saldoVisible = 0;
-     this.saldoCargado = false;
   }
+
 
   scanCode() {
     this.saldoCargado = false;
     this.barcodeScanner
       .scan()
       .then(barcodeData => {
+
+        if (barcodeData.cancelled !== true) {
           this.scannedData = barcodeData;
 
-          if (this.arrCodigos[barcodeData['text'].substr(5,10)]) {
-              // this.saldoVisible = ;
-              let cargo = this.cs.agregarCarga(this.arrCodigos[barcodeData['text'].substr(5, 10)]);
-              if(cargo) {
-                this.saldoVisible = this.cs.getSaldo();
-              } else {
-                this.saldoCargado = true;
-              }
+          if (this.arrCodigos[barcodeData['text'].substr(5, 10)]) {
 
-
+            let cargo = this.cs.agregarCarga(this.arrCodigos[barcodeData['text'].substr(5, 10)]);
+            if (cargo) {
+              this.saldoVisible = this.cs.getSaldo();
+            } else {
+              this.saldoCargado = true;
+            }
 
           } else {
-              this.saldoVisible = 0;
+            this.saldoVisible = 0;
           }
-        // this.valorCodigo = this.cargadorService.getSaldoFromQR(JSON.stringify(barcodeData));
+        } else {
+          console.log('Barcode Canelado');
+        }
 
       })
       .catch(err => {
-        console.log("Error", err);
+        console.log(err);
       });
   }
 
@@ -88,8 +92,20 @@ export class BienvenidoPage implements OnInit {
           this.encodeData = encodedData;
         },
         err => {
-          console.log("Error occured : " + err);
+          console.log(err);
         }
       );
   }
+
+  // backButtonEvent() {
+  //   this.platform.backButton.subscribe(() => {
+  //     try {
+  //       alert('Voy a hacer logout');
+  //       this.afAuth.auth.signOut();
+  //       // signed out
+  //     } catch (e) {
+  //      // an error
+  //     }
+  //   });
+  // }
 }

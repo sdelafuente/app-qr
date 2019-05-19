@@ -35,7 +35,7 @@ export class LoginPage implements OnInit {
     try {
 
       const response = await this.afAuth.auth.signInWithEmailAndPassword(this.email, this.password);
-      // console.log(response);
+
       if (response.user) {
         this.loading = false;
 
@@ -44,12 +44,6 @@ export class LoginPage implements OnInit {
 
     } catch (err) {
         this.loading = false;
-
-        // if (err.code === 'auth/user-not-found' ) {
-        //     console.dir(err);
-        // } else {
-        //   console.dir(err);
-        // }
     }
   }
 
